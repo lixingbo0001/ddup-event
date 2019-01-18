@@ -9,7 +9,7 @@
 namespace Ddup\Event\Test\Provider;
 
 
-use Providers\Row\RowContainerInterface;
+use Ddup\Part\Row\RowContainerInterface;
 
 class UserRow implements RowContainerInterface
 {

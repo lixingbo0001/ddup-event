@@ -40,7 +40,10 @@ class HookTest extends TestCase
             "status"   => "success",
         ];
 
-        systemEvent($message_arr, 'test');
+        $message = new EventMessage($message_arr);
+        $event   = new EventSystem($message);
+
+        $event->execute('test');
 
         $this->assertTrue(true);
     }
