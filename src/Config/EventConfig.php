@@ -9,22 +9,16 @@
 namespace Ddup\Event\Config;
 
 
-use Ddup\Event\Contracts\EventInterface;
-
-class Config
+class EventConfig
 {
     private $_config  = [];
     private $_dynamic = [];
 
-    public function __construct($events, EventInterface $event)
+    public function __construct($config)
     {
-        $config = array_get($events, $event->eventName());
-
         if (!$config) return;
 
-        $this->_config = [
-            $config
-        ];
+        $this->_config = $config;
     }
 
     public function register($config)

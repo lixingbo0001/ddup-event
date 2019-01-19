@@ -3,8 +3,8 @@
 
 use Ddup\Event\Matcher;
 use Ddup\Part\Message\MessageContract;
-use Ddup\Event\Config\Config;
-use Ddup\Event\Config\ConfigStruct;
+use Ddup\Event\Config\EventConfig;
+use Ddup\Event\Config\HookStruct;
 use Ddup\Event\Contracts\HookInterface;
 use Illuminate\Support\Str;
 
@@ -20,14 +20,14 @@ class Hook
         $this->prefix    = $prefix;
     }
 
-    public function handle(Config $config, MessageContract $message)
+    public function handle(EventConfig $config, MessageContract $message)
     {
         $matcher = new Matcher();
 
         $matcher->isMatched($config, $message, $this);
     }
 
-    public function callback(ConfigStruct $struct, MessageContract $message)
+    public function callback(HookStruct $struct, MessageContract $message)
     {
         $this->disptcher->dispatch(self::make($struct->name), $struct, $message);
     }
@@ -37,7 +37,7 @@ class Hook
         $className = self::spellingHookClassName($name);
 
         if (!class_exists($className)) {
-            throw new \Exception("hook not exists:" . $name);
+            throw new \Exception("hook not exists:" . $name . ' in [' . $this->prefix . ']');
         }
 
         return new $className;
@@ -45,7 +45,7 @@ class Hook
 
     private function spellingHookClassName($name)
     {
-        return $this->prefix . Str::studly($name) . 'Hook';
+        return $this->prefix . '\\' . Str::studly($name) . 'Hook';
     }
 
 }

@@ -8,6 +8,7 @@
 
 namespace Ddup\Event\Test;
 
+use Ddup\Event\Config\ConfigStruct;
 use PHPUnit\Framework\TestCase;
 use Ddup\Event\EventMessage;
 use Ddup\Event\EventProvider\EventSystem;
@@ -25,7 +26,7 @@ class HookTest extends TestCase
 
         $message = new EventMessage($message_arr);
 
-        $event = new EventSystem($message);
+        $event = new EventSystem($message, new ConfigStruct());
 
         $event->execute('test');
 
@@ -41,7 +42,7 @@ class HookTest extends TestCase
         ];
 
         $message = new EventMessage($message_arr);
-        $event   = new EventSystem($message);
+        $event   = new EventSystem($message, new ConfigStruct());
 
         $event->execute('test');
 

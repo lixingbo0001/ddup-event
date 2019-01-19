@@ -2,7 +2,7 @@
 
 
 use Ddup\Part\Message\MessageContract;
-use Ddup\Event\Config\ConfigStruct;
+use Ddup\Event\Config\HookStruct;
 use Ddup\Event\Contracts\HookInterface;
 
 class HookDispatcher
@@ -13,14 +13,14 @@ class HookDispatcher
         $hanlder->handle($message);
     }
 
-    private function asyncHandle(HookInterface $hanlder, ConfigStruct $option, MessageContract $message)
+    private function asyncHandle(HookInterface $hanlder, HookStruct $option, MessageContract $message)
     {
         $job = (new HookJob($hanlder, $message))->delay((int)$option->delay);
 
         dispatch($job);
     }
 
-    public function dispatch(HookInterface $handle, ConfigStruct $option, MessageContract $message)
+    public function dispatch(HookInterface $handle, HookStruct $option, MessageContract $message)
     {
         if ($option->is_async) {
             $this->asyncHandle($handle, $option, $message);

@@ -9,6 +9,7 @@
 namespace Ddup\Event\EventProvider;
 
 
+use Ddup\Event\Config\ConfigStruct;
 use Ddup\Event\Contracts\EventInterface;
 use Ddup\Event\EventReply;
 use Ddup\Part\Message\MessageContract;
@@ -17,10 +18,12 @@ class EventSystem implements EventInterface
 {
 
     protected $message;
+    private   $config;
 
-    public function __construct(MessageContract $message)
+    public function __construct(MessageContract $message, ConfigStruct $config)
     {
         $this->message = $message;
+        $this->config  = $config;
     }
 
     public function eventKey()
@@ -45,7 +48,7 @@ class EventSystem implements EventInterface
             $this->message->set('event', $name);
         }
 
-        $event_reply = new EventReply($this, $this->message);
+        $event_reply = new EventReply($this, $this->message, $this->config);
 
         return $event_reply->response();
     }

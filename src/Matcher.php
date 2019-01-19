@@ -9,15 +9,15 @@
 namespace Ddup\Event;
 
 
-use Ddup\Part\Conditions\Contracts\ConditionContract;
+use Ddup\Part\Contracts\ConditionContract;
 use Ddup\Part\Conditions\Def;
 use Ddup\Part\Conditions\Equal;
 use Ddup\Part\Conditions\Greater;
 use Ddup\Part\Conditions\Less;
 use Ddup\Part\Conditions\Preg;
 use Ddup\Part\Message\MessageContract;
-use Ddup\Event\Config\Config;
-use Ddup\Event\Config\ConfigStruct;
+use Ddup\Event\Config\EventConfig;
+use Ddup\Event\Config\HookStruct;
 use Ddup\Event\Hook\Hook;
 
 class Matcher
@@ -31,16 +31,11 @@ class Matcher
         $this->register(new Greater());
         $this->register(new Less());
         $this->register(new Preg());
-        $this->register(new Def());
     }
 
-    /**
-     * @param $name
-     * @return ConditionContract
-     */
-    public function getCondition($name)
+    public function getCondition($name):ConditionContract
     {
-        if (!isset($this->conditions[$config->condition_op])) return null;
+        if (!isset($this->conditions[$name])) return new Def();
 
         return $this->conditions[$name];
     }
@@ -52,10 +47,10 @@ class Matcher
 
     public function struct($config)
     {
-        return new ConfigStruct($config);
+        return new HookStruct($config);
     }
 
-    public function isMatched(Config $hooks, MessageContract $message, Hook $executor)
+    public function isMatched(EventConfig $hooks, MessageContract $message, Hook $executor)
     {
         $hooks = $hooks->config();
 
@@ -71,7 +66,7 @@ class Matcher
         return false;
     }
 
-    private function matched(ConfigStruct $config, MessageContract $message)
+    private function matched(HookStruct $config, MessageContract $message)
     {
         $condition = $this->getCondition($config->condition_op);
 

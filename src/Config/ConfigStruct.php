@@ -12,11 +12,17 @@ use Ddup\Part\Struct\StructReadable;
 
 class ConfigStruct extends StructReadable
 {
-    public $name     = 'not';
-    public $is_async = 0;
-    public $delay    = 0;
-    public $condition_op;
-    public $condition_key;
-    public $condition_val;
-
+    public $hook_path = 'Ddup\\Event\\Test\\Provider\\Hooks';
+    public $events    = [
+        'system_event_test' => [
+            [
+                'name'          => 'test1',
+                'is_async'      => 0,
+                'delay'         => 0,
+                'condition_op'  => null,
+                'condition_key' => null,
+                'condition_val' => null
+            ]
+        ]
+    ];
 }

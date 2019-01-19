@@ -9,10 +9,11 @@
 namespace Ddup\Event;
 
 
+use Ddup\Event\Config\ConfigStruct;
 use Ddup\Event\Contracts\EventInterface;
 use Ddup\Part\Libs\Arr;
 use Ddup\Part\Message\MessageContract;
-use Ddup\Event\Config\Config;
+use Ddup\Event\Config\EventConfig;
 use Ddup\Event\Hook\Hook;
 
 class EventReply
@@ -20,11 +21,13 @@ class EventReply
 
     private $message;
     private $event;
+    private $config;
 
-    public function __construct(EventInterface $event, MessageContract $message)
+    public function __construct(EventInterface $event, MessageContract $message, ConfigStruct $config)
     {
         $this->event   = $event;
         $this->message = $message;
+        $this->config  = $config;
     }
 
     private function getReplys()
@@ -32,14 +35,23 @@ class EventReply
         return [];
     }
 
+    private function defaultHooks()
+    {
+        return array_get($this->config->events, $this->event->eventName(), []);
+    }
+
+    private function dymicHooks()
+    {
+        $replys = $this->getReplys();
+        return Arr::pullAll($replys, 'hook', 'type');
+    }
+
     public function response()
     {
-        $replys      = $this->getReplys();
-        $hooks       = Arr::pullAll($replys, 'hook', 'type');
-        $hook_handle = new Hook();
-        $hook_config = new Config([], $this->event);
+        $hook_handle = new Hook($this->config->hook_path);
+        $hook_config = new EventConfig($this->defaultHooks());
 
-        $hook_config->register($hooks);
+        $hook_config->register($this->dymicHooks());
 
         $hook_handle->handle($hook_config, $this->message);
 

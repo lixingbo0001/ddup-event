@@ -9,12 +9,17 @@
 namespace Ddup\Event\Test\Provider;
 
 
-use Ddup\Part\Row\RowContainerInterface;
+use Ddup\Part\Contracts\RowContainerInterface;
 
 class UserRow implements RowContainerInterface
 {
 
     private $id;
+
+    public function getRow()
+    {
+        // TODO: Implement getRow() method.
+    }
 
     public function __construct($id)
     {

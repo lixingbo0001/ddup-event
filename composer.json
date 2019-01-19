@@ -9,7 +9,8 @@
   "require": {
     "ddup/part": "^1.1",
     "illuminate/bus": "^5.7",
-    "illuminate/queue": "^5.7"
+    "illuminate/queue": "^5.7",
+    "ddup/logger": "^1.0"
   },
   "autoload": {
     "psr-4": {
