@@ -50,7 +50,7 @@ class Matcher
         return new HookStruct($config);
     }
 
-    public function isMatched(EventConfig $hooks, MessageContract $message, Hook $executor)
+    public function call(EventConfig $hooks, MessageContract $message, Hook $executor)
     {
         $hooks = $hooks->config();
 

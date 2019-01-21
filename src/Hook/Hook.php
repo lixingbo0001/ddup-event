@@ -24,7 +24,7 @@ class Hook
     {
         $matcher = new Matcher();
 
-        $matcher->isMatched($config, $message, $this);
+        $matcher->call($config, $message, $this);
     }
 
     public function callback(HookStruct $struct, MessageContract $message)
