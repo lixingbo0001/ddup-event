@@ -9,10 +9,10 @@
 namespace Ddup\Event;
 
 
-use Ddup\Event\Translator\MsgTranslaterArray;
-use Ddup\Event\Translator\MsgTranslaterXml;
 use Ddup\Part\Libs\Helper;
 use Ddup\Part\Message\MessageContract;
+use Ddup\Part\Message\MsgFromArray;
+use Ddup\Part\Message\MsgFromXml;
 
 class EventMessage extends MessageContract
 {
@@ -24,11 +24,11 @@ class EventMessage extends MessageContract
 
         switch (gettype($message)) {
             case 'string':
-                $this->container = new MsgTranslaterXml($message);
+                $this->container = new MsgFromXml($message);
                 break;
             default:
                 $message         = Helper::toArray($message);
-                $this->container = new MsgTranslaterArray($message);
+                $this->container = new MsgFromArray($message);
                 break;
         }
     }
