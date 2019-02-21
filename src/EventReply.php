@@ -22,12 +22,22 @@ class EventReply
     private $message;
     private $event;
     private $config;
+    private $materials;
+    private $dymic_hooks;
 
     public function __construct(EventInterface $event, MessageContract $message, ConfigStruct $config)
     {
         $this->event   = $event;
         $this->message = $message;
         $this->config  = $config;
+    }
+
+    private function setReplys()
+    {
+        $replys = $this->getReplys();
+
+        $this->dymic_hooks = Arr::pullAll($replys, 'hook', 'type');
+        $this->materials   = $replys;
     }
 
     private function getReplys()
@@ -40,22 +50,18 @@ class EventReply
         return array_get($this->config->events, $this->event->eventName(), []);
     }
 
-    private function dymicHooks()
-    {
-        $replys = $this->getReplys();
-        return Arr::pullAll($replys, 'hook', 'type');
-    }
-
     public function response()
     {
+        $this->setReplys();
+
         $hook_handle = new Hook($this->config->hook_path);
         $hook_config = new EventConfig($this->defaultHooks());
 
-        $hook_config->register($this->dymicHooks());
+        $hook_config->register($this->dymic_hooks);
 
         $hook_handle->handle($hook_config, $this->message);
 
-        return true;
+        return array_get($this->materials, 0);
     }
 
 }
