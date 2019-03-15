@@ -11,6 +11,7 @@ namespace Ddup\Event;
 
 use Ddup\Event\Config\ConfigStruct;
 use Ddup\Event\Contracts\EventInterface;
+use Ddup\Event\Contracts\MaterialProviderInterface;
 use Ddup\Part\Libs\Arr;
 use Ddup\Part\Message\MessageContract;
 use Ddup\Event\Config\EventConfig;
@@ -42,7 +43,23 @@ class EventReply
 
     private function getReplys()
     {
-        return [];
+        $provider_class = $this->config->material_provider;
+
+        if (!$provider_class) {
+            return [];
+        }
+
+        if (!class_exists($provider_class)) {
+            throw new \Exception($provider_class . '提供者不存在');
+        }
+
+        $provider = new $provider_class;
+
+        if ($provider instanceof MaterialProviderInterface) {
+            return (array)$provider->matchAll($this->event);
+        }
+
+        throw new \Exception('自动回复的素材提供者需要实现 MaterialProviderInterface');
     }
 
     private function defaultHooks()

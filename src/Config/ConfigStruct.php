@@ -13,6 +13,7 @@ use Ddup\Part\Struct\StructReadable;
 class ConfigStruct extends StructReadable
 {
     public $hook_path = 'Ddup\\Event\\Test\\Provider\\Hooks';
+    public $material_provider;
     public $events    = [
         'system_event_test' => [
             [
