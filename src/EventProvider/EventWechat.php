@@ -14,6 +14,8 @@ use Ddup\Event\Contracts\EventInterface;
 use Ddup\Event\Contracts\EventKeyInterface;
 use Ddup\Event\EventReply;
 use Ddup\Part\Message\MessageContract;
+use Ddup\Event\Contracts\MaterialProviderInterface;
+
 
 class EventWechat implements EventInterface
 {
@@ -47,10 +49,33 @@ class EventWechat implements EventInterface
         return $this->message->get('MsgType') . '_' . $this->message->get('Event');
     }
 
-    public function execute($name = null)
+    public function execute($provider_class = null)
     {
         $event_reply = new EventReply($this, $this->message, $this->config);
 
+        $event_reply->setReplys($this->getMaterials($provider_class));
+
         return $event_reply->response();
     }
+
+    public function getMaterials($provider_class)
+    {
+        if (!$provider_class) {
+            return [];
+        }
+
+        if (!class_exists($provider_class)) {
+            throw new \Exception($provider_class . '提供者不存在');
+        }
+
+        $provider = new $provider_class;
+
+        if ($provider instanceof MaterialProviderInterface) {
+            return (array)$provider->matchAll($this);
+        }
+
+        throw new \Exception('自动回复的素材提供者需要实现 MaterialProviderInterface');
+    }
+
+
 }
