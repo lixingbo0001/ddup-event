@@ -78,6 +78,7 @@ class EventReply
 
         $hook_handle->handle($hook_config, $this->message);
 
+
         return array_get($this->materials, 0);
     }
 

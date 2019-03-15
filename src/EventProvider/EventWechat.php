@@ -11,6 +11,7 @@ namespace Ddup\Event\EventProvider;
 
 use Ddup\Event\Config\ConfigStruct;
 use Ddup\Event\Contracts\EventInterface;
+use Ddup\Event\Contracts\EventKeyInterface;
 use Ddup\Event\EventReply;
 use Ddup\Part\Message\MessageContract;
 
@@ -19,11 +20,15 @@ class EventWechat implements EventInterface
 
     protected $message;
     private   $config;
+    private   $_wrapper;
 
-    public function __construct(MessageContract $message, ConfigStruct $config)
+    public function __construct(MessageContract $message, ConfigStruct $config, EventKeyInterface $wrapper)
     {
-        $this->message = $message;
-        $this->config  = $config;
+        $this->message  = $message;
+        $this->config   = $config;
+        $this->_wrapper = $wrapper;
+
+        $this->_wrapper->init($this, $message);
     }
 
     public function eventKey()
@@ -34,7 +39,7 @@ class EventWechat implements EventInterface
             return $event_key;
         }
 
-        return $this->eventName();
+        return $this->_wrapper->eventKey();
     }
 
     public function eventName()
