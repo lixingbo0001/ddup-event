@@ -8,8 +8,8 @@
   ],
   "require": {
     "ddup/part": "^1.3",
-    "illuminate/bus": "5.5.*",
-    "illuminate/queue": "5.5.*",
+    "illuminate/bus": "*",
+    "illuminate/queue": "*",
     "ddup/logger": "^1.0"
   },
   "autoload": {
