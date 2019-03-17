@@ -1,14 +1,14 @@
 <?php namespace Ddup\Event\Hook;
 
 
+use Ddup\Event\Contracts\MatcherCallable;
 use Ddup\Event\Matcher;
 use Ddup\Part\Message\MessageContract;
-use Ddup\Event\Config\EventConfig;
 use Ddup\Event\Config\HookStruct;
 use Ddup\Event\Contracts\HookInterface;
 use Illuminate\Support\Str;
 
-class Hook
+class Hook implements MatcherCallable
 {
 
     private $disptcher;
@@ -20,11 +20,11 @@ class Hook
         $this->prefix    = $prefix;
     }
 
-    public function handle(EventConfig $config, MessageContract $message)
+    public function handle($hooks, MessageContract $message)
     {
         $matcher = new Matcher();
 
-        $matcher->call($config, $message, $this);
+        $matcher->call($hooks, $message, $this);
     }
 
     public function callback(HookStruct $struct, MessageContract $message)

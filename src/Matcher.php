@@ -9,6 +9,7 @@
 namespace Ddup\Event;
 
 
+use Ddup\Event\Contracts\MatcherCallable;
 use Ddup\Part\Contracts\ConditionContract;
 use Ddup\Part\Conditions\Def;
 use Ddup\Part\Conditions\Equal;
@@ -16,9 +17,7 @@ use Ddup\Part\Conditions\Greater;
 use Ddup\Part\Conditions\Less;
 use Ddup\Part\Conditions\Preg;
 use Ddup\Part\Message\MessageContract;
-use Ddup\Event\Config\EventConfig;
 use Ddup\Event\Config\HookStruct;
-use Ddup\Event\Hook\Hook;
 
 class Matcher
 {
@@ -50,13 +49,11 @@ class Matcher
         return new HookStruct($config);
     }
 
-    public function call(EventConfig $hooks, MessageContract $message, Hook $executor)
+    public function call($hooks, MessageContract $message, MatcherCallable $executor)
     {
-        $hooks = $hooks->config();
+        foreach ($hooks as $hook) {
 
-        foreach ($hooks as $config) {
-
-            $struct = $this->struct($config);
+            $struct = $this->struct($hook);
 
             if ($this->matched($struct, $message)) {
                 $executor->callback($struct, $message);

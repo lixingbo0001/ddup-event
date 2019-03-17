@@ -8,9 +8,10 @@
 
 namespace Ddup\Event\Config;
 
-use Ddup\Part\Struct\StructReadable;
 
-class HookStruct extends StructReadable
+use Ddup\Part\Struct\StructCompleteReadable;
+
+class HookStruct extends StructCompleteReadable
 {
     public $name     = 'not';
     public $is_async = 0;
