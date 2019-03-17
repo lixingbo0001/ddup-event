@@ -35,12 +35,6 @@ class EventWechat implements EventInterface
 
     public function eventKey()
     {
-        $event_key = $this->message->get('EventKey');
-
-        if ($event_key !== null) {
-            return $event_key;
-        }
-
         return $this->_wrapper->eventKey();
     }
 
