@@ -10,6 +10,7 @@ namespace Ddup\Event;
 
 
 use Ddup\Event\Contracts\MatcherCallable;
+use Ddup\Part\Conditions\NotEqual;
 use Ddup\Part\Contracts\ConditionContract;
 use Ddup\Part\Conditions\Def;
 use Ddup\Part\Conditions\Equal;
@@ -27,6 +28,7 @@ class Matcher
     public function __construct()
     {
         $this->register(new Equal());
+        $this->register(new NotEqual());
         $this->register(new Greater());
         $this->register(new Less());
         $this->register(new Preg());
