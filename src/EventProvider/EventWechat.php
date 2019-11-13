@@ -43,7 +43,7 @@ class EventWechat implements EventInterface
         return $this->message->get('MsgType') . '_' . $this->message->get('Event');
     }
 
-    public function execute($provider_class = null)
+    public function execute($provider_class = null):EventReply
     {
         $event_reply = new EventReply($this, $this->message, $this->config);
 

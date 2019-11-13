@@ -42,7 +42,7 @@ class EventSystem implements EventInterface
         return 'system_event_' . $this->message->get('event');
     }
 
-    public function execute($name = null)
+    public function execute($name = null):EventReply
     {
         if (!is_null($name)) {
             $this->message->set('event', $name);

@@ -9,7 +9,6 @@
 namespace Ddup\Event;
 
 
-use Ddup\Event\Contracts\MatcherCallable;
 use Ddup\Part\Conditions\NotEqual;
 use Ddup\Part\Contracts\ConditionContract;
 use Ddup\Part\Conditions\Def;
@@ -51,14 +50,14 @@ class Matcher
         return new HookStruct($config);
     }
 
-    public function call($hooks, MessageContract $message, MatcherCallable $executor)
+    public function call($hooks, MessageContract $message, \Closure $executor)
     {
         foreach ($hooks as $hook) {
 
             $struct = $this->struct($hook);
 
             if ($this->matched($struct, $message)) {
-                $executor->callback($struct, $message);
+                $executor($struct, $message);
             }
         }
 

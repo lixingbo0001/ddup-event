@@ -28,7 +28,9 @@ class HookTest extends TestCase
 
         $event = new EventSystem($message, new ConfigStruct());
 
-        $event->execute('test');
+        $reply = $event->execute('test');
+
+        dump($reply->getTrace()->get('hook')->toArray());
 
         $this->assertEquals(true, true);
     }

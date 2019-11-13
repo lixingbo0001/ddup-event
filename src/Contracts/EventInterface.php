@@ -8,11 +8,13 @@
 
 namespace Ddup\Event\Contracts;
 
+use Ddup\Event\EventReply;
+
 interface EventInterface
 {
     public function eventKey();
 
     public function eventName();
 
-    public function execute($name = null);
+    public function execute($name = null):EventReply;
 }
