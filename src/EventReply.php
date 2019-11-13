@@ -112,7 +112,7 @@ class EventReply
 
     public function getMaterials()
     {
-        return $this->_message;
+        return $this->_materials;
     }
 
     public function getHooks()
@@ -123,11 +123,6 @@ class EventReply
     public function getTrace()
     {
         return $this->_trace_collection;
-    }
-
-    public function getReplys()
-    {
-        return $this->_hooks;
     }
 
     public function response()
